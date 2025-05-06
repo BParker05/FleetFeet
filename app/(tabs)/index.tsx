@@ -25,6 +25,9 @@ export default function HomeScreen() {
       <Link href="/newScreen" style={styles.button}>
         <ThemedText type="link">Go to New Screen</ThemedText>
       </Link>
+      <Link href="/screen1" style={styles.button}>
+        <ThemedText type="link">Go to Screen 1</ThemedText>
+      </Link>
     </ParallaxScrollView>
   );
 }
