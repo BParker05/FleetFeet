@@ -8,6 +8,7 @@ export default function Screen4() {
     <ThemedView style={styles.container}>
       <ThemedText type="title">Screen 4</ThemedText>
       <Link href="/screen3" style={styles.button}>
+        <ThemedText type="subtitle">Screen3</ThemedText>
         <ThemedText type="link">Go to Screen 3</ThemedText>
       </Link>
     </ThemedView>
@@ -27,5 +28,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#0a7ea4',
     borderRadius: 5,
     alignItems: 'center',
+    justifyContent: 'center',
   },
 });

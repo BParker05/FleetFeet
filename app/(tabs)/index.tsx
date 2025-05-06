@@ -23,9 +23,11 @@ export default function HomeScreen() {
       </ThemedView>
       <HelloWave />
       <Link href="/newScreen" style={styles.button}>
+        <ThemedText type="subtitle">New Screen</ThemedText>
         <ThemedText type="link">Go to New Screen</ThemedText>
       </Link>
       <Link href="/screen1" style={styles.button}>
+        <ThemedText type="subtitle">Screen1</ThemedText>
         <ThemedText type="link">Go to Screen 1</ThemedText>
       </Link>
     </ParallaxScrollView>
@@ -55,5 +57,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#0a7ea4',
     borderRadius: 5,
     alignItems: 'center',
+    justifyContent: 'center',
   },
 });
