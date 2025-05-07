@@ -1,10 +1,6 @@
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { Link } from 'expo-router';
-import { StyleSheet } from 'react-native';
-import React from 'react';
-import MapView, { Circle, PROVIDER_DEFAULT, Marker } from 'react-native-maps';
-
+import { StyleSheet, View } from 'react-native';
 
 export default function Screen1() {
   const RADIUS = 300;
@@ -39,34 +35,12 @@ export default function Screen1() {
     ))
   }
   return (
-    <ThemedView style={styles.container}>
-      <MapView
-        provider={PROVIDER_DEFAULT}
-        style={styles.map}
-        initialRegion={{
-          latitude: -37.721,
-          longitude: 145.046,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
-        }}
-      >
-        {renderMarkers()}
-        <Circle
-          center={{
-            latitude: -37.721407,
-            longitude: 145.046530,
-          }}
-          radius={200}
-        />
-      </MapView>
-
-
-      <ThemedText type="title">Screen 1</ThemedText>
+    <View style={styles.container}>
+      <ThemedText style={styles.title}>Screen 1</ThemedText>
       <Link href="/screen2" style={styles.button}>
-        <ThemedText type="subtitle">Screen2</ThemedText>
-        <ThemedText type="link">Go to Screen 2</ThemedText>
+        <ThemedText style={styles.buttonText}>Go to Screen 2</ThemedText>
       </Link>
-    </ThemedView>
+    </View>
   );
 
 }
@@ -74,26 +48,32 @@ export default function Screen1() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#e03424',
     justifyContent: 'flex-start',
     alignItems: 'center',
     padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 20,
   },
 
   button: {
     marginTop: 20,
     padding: 10,
-    backgroundColor: '#0a7ea4',
+    backgroundColor: '#242424',
+    borderWidth: 2,
+    borderColor: 'white',
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
+    width: 200,
   },
-
-  map:{
-    flex: 1,
-    width: '100%',
-    height: '75%',
-    marginTop: 20,
-    borderRadius: 10,
-    borderWidth: 1,
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
