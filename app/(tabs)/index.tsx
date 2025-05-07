@@ -19,7 +19,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'red',
+    backgroundColor: '#e03424',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 20,
     padding: 10,
+    backgroundColor: '#242424',
     borderWidth: 2,
     borderColor: 'white',
     borderRadius: 5,

@@ -1,33 +1,46 @@
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { Link } from 'expo-router';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 export default function Screen1() {
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText type="title">Screen 1</ThemedText>
+    <View style={styles.container}>
+      <ThemedText style={styles.title}>Screen 1</ThemedText>
       <Link href="/screen2" style={styles.button}>
-        <ThemedText type="subtitle">Screen2</ThemedText>
-        <ThemedText type="link">Go to Screen 2</ThemedText>
+        <ThemedText style={styles.buttonText}>Go to Screen 2</ThemedText>
       </Link>
-    </ThemedView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#e03424',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
   },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 20,
+  },
   button: {
     marginTop: 20,
     padding: 10,
-    backgroundColor: '#0a7ea4',
+    backgroundColor: '#242424',
+    borderWidth: 2,
+    borderColor: 'white',
     borderRadius: 5,
     alignItems: 'center',
     justifyContent: 'center',
+    width: 200,
+  },
+  buttonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
