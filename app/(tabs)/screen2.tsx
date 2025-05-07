@@ -12,7 +12,7 @@ export default function Screen2() {
         <ThemedText type="link">Go to Screen 1</ThemedText>
       </Link>
       <Link href="/screen3" style={styles.button}>
-        <ThemedText type="subtitle">Screen2</ThemedText>
+        <ThemedText type="subtitle">Screen3</ThemedText>
         <ThemedText type="link">Go to Screen 3</ThemedText>
       </Link>
     </ThemedView>
