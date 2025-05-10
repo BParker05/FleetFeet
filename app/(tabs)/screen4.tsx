@@ -9,6 +9,9 @@ export default function Screen4() {
       <Link href="/screen3" style={styles.button}>
         <ThemedText style={styles.buttonText}>Go to Screen 3</ThemedText>
       </Link>
+      <Link href="/home" style={styles.button}>
+        <ThemedText style={styles.buttonText}>Go to Home</ThemedText>
+      </Link>
     </View>
   );
 }

@@ -6,12 +6,11 @@ export default function Screen2() {
   return (
     <View style={styles.container}>
       <ThemedText style={styles.title}>Screen 2</ThemedText>
-      <Link href="/screen1" style={styles.button}>
-        <ThemedText style={styles.buttonText}>Go to Screen 1</ThemedText>
+      <Link href="/home" style={styles.button}>
+        <ThemedText style={styles.buttonText}>Go to Home</ThemedText>
       </Link>
       <Link href="/screen3" style={styles.button}>
-        <ThemedText type="subtitle">Screen2</ThemedText>
-        <ThemedText type="link">Go to Screen 3</ThemedText>
+        <ThemedText style={styles.buttonText}>Go to Screen 3</ThemedText>
       </Link>
     </View>
   );

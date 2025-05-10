@@ -5,12 +5,9 @@ import { StyleSheet, View } from 'react-native';
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      <ThemedText style={styles.title}>Home Screen</ThemedText>
-      <Link href="/screen1" style={styles.button}>
-        <ThemedText style={styles.buttonText}>Go to Screen 1</ThemedText>
-      </Link>
-      <Link href="/screen3" style={styles.button}>
-        <ThemedText style={styles.buttonText}>Go to Screen 3</ThemedText>
+      <ThemedText style={styles.title}>Please verify identity</ThemedText>
+      <Link href="/home" style={styles.button}>
+        <ThemedText style={styles.buttonText}>Enter phone number</ThemedText>
       </Link>
     </View>
   );

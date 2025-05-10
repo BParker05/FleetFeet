@@ -1,6 +1,7 @@
 import { ThemedText } from '@/components/ThemedText';
 import { Link } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
+import { Marker } from 'react-native-maps';
 
 export default function Screen1() {
   const RADIUS = 300;
@@ -25,7 +26,7 @@ export default function Screen1() {
   ];
 
   const renderMarkers = () => {
-    return markers. map((marker, index) => (
+    return markers.map((marker, index) => (
       <Marker
         key={index}
         coordinate={marker.coordinate}
