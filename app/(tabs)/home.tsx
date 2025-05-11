@@ -1,14 +1,39 @@
 import { ThemedText } from '@/components/ThemedText';
 import { Link } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import MapView, { Circle, Marker, PROVIDER_DEFAULT } from 'react-native-maps';
 
 
 export default function Screen1() {
   // variables
   const [timer, setTimer] = useState(0);
+  const [isRunning, setIsRunning] = useState(false); // Track if the timer is running
   const RADIUS = 300;
+
+  // Timer logic
+  useEffect(() => {
+    let interval: number | null = null; // Change type to 'number | null'
+    if (isRunning) {
+      interval = setInterval(() => {
+        setTimer((prev) => prev + 1);
+      }, 1000);
+    } else if (!isRunning && timer !== 0) {
+      clearInterval(interval!);
+    }
+    return () => {
+      if (interval !== null) {
+        clearInterval(interval);
+      }
+    };
+  }, [isRunning]);
+
+  // Format time as MM:SS
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  };
 
   // create markers and renderMarkers function
   const markers = [
@@ -26,7 +51,7 @@ export default function Screen1() {
         longitude: 145.046530,
       },
       title: "BethGleeson Building",
-      description: "My course's building, fuck this place hah",
+      description: "My course's building",
     },
   ];
 
@@ -38,14 +63,24 @@ export default function Screen1() {
         title={marker.title}
         description={marker.description}
       />
-    ))
-  }
+    ));
+  };
 
-  // 
-  return(
+  // Toggle timer function
+  const toggleTimer = () => {
+    setIsRunning((prev) => {
+      if (!prev) {
+        // If starting the timer, reset it to 0
+        setTimer(0);
+      }
+      return !prev;
+    });
+  };
+
+  return (
   <View style={styles.container}>
 
-    <ThemedText style={styles.timer}>{`Timer: ${timer}s`}</ThemedText>
+    <ThemedText style={styles.timer}>{`Timer: ${formatTime(timer)}`}</ThemedText>
     
     <View style={styles.mapWrapper}>
       <MapView
@@ -68,9 +103,11 @@ export default function Screen1() {
       </MapView>
     </View>
 
-
-
-  <ThemedText style={styles.button}>START/STOP</ThemedText>
+    <TouchableOpacity style={styles.button} onPress={toggleTimer}>
+      <ThemedText style={styles.buttonText}>
+        {isRunning ? "STOP" : "START"}
+      </ThemedText>
+    </TouchableOpacity>
 
     <Link href="/screen2" style={styles.button}>
       <ThemedText style={styles.buttonText}>Go to Screen 2</ThemedText>
