@@ -2,27 +2,15 @@ import { ThemedText } from '@/components/ThemedText';
 import { Link } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import {getAuth} from  "firebase/auth";
-
-// import firebase
-import '../../firebase.js'; 
-const firebaseConfig = require('../../firebase.js');
-
+// Import the initialized Firebase app and auth
 
 export default function HomeScreen() {
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const auth = getAuth(app);
-
+  // Use the already initialized auth
   return (
     <View style={styles.container}>
-      <ThemedText style={styles.title}>Please verify identity</ThemedText>
+      <ThemedText style={styles.title}>Welcome To FleetFeet</ThemedText>
       <Link href="/home" style={styles.button}>
-        <ThemedText style={styles.buttonText}>Enter phone number</ThemedText>
+        <ThemedText style={styles.buttonText}>Log In</ThemedText>
       </Link>
     </View>
   );
