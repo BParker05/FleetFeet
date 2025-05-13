@@ -1,7 +1,8 @@
 import { ThemedText } from '@/components/ThemedText';
+import * as Location from 'expo-location';
 import { Link } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker, PROVIDER_DEFAULT, Region } from 'react-native-maps';
 
 export default function Screen1() {
@@ -16,22 +17,81 @@ export default function Screen1() {
 
   // User location state
   const [userLocation, setUserLocation] = useState<Region | null>(null);
+  const [locationSubscription, setLocationSubscription] = useState<Location.LocationSubscription | null>(null);
 
-  // Timer logic
+  // Request location permissions and start tracking
   useEffect(() => {
-    let interval: number | null = null;
-    if (isRunning) {
-      interval = setInterval(() => {
-        setTimer((prev) => prev + 1);
-      }, 1000);
-    } else if (!isRunning && timer !== 0) {
-      clearInterval(interval!);
-    }
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission Denied', 'Location permission is required to track your jogging route.');
+        return;
+      }
+
+      // Get initial location
+      const location = await Location.getCurrentPositionAsync({});
+      const initialRegion = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      };
+      setRegion(initialRegion);
+      setUserLocation(initialRegion);
+    })();
+
     return () => {
-      if (interval !== null) {
-        clearInterval(interval);
+      if (locationSubscription) {
+        locationSubscription.remove();
       }
     };
+  }, []);
+
+  // Start/Stop location tracking with timer
+  useEffect(() => {
+    if (isRunning) {
+      // Start location tracking
+      const startTracking = async () => {
+        const subscription = await Location.watchPositionAsync(
+          {
+            accuracy: Location.Accuracy.High,
+            timeInterval: 1000,
+            distanceInterval: 1,
+          },
+          (location) => {
+            const newRegion = {
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+              latitudeDelta: 0.01,
+              longitudeDelta: 0.01,
+            };
+            setRegion(newRegion);
+            setUserLocation(newRegion);
+          }
+        );
+        setLocationSubscription(subscription);
+      };
+
+      startTracking();
+
+      // Start timer
+      const interval = setInterval(() => {
+        setTimer((prev) => prev + 1);
+      }, 1000);
+
+      return () => {
+        clearInterval(interval);
+        if (locationSubscription) {
+          locationSubscription.remove();
+        }
+      };
+    } else {
+      // Stop location tracking
+      if (locationSubscription) {
+        locationSubscription.remove();
+        setLocationSubscription(null);
+      }
+    }
   }, [isRunning]);
 
   // Format time function
@@ -51,23 +111,6 @@ export default function Screen1() {
     });
   };
 
-  // Update region and user location when location changes
-  const handleUserLocationChange = (event: any) => {
-    const { latitude, longitude } = event.nativeEvent.coordinate;
-    setRegion({
-      latitude,
-      longitude,
-      latitudeDelta: 0.01,
-      longitudeDelta: 0.01,
-    });
-    setUserLocation({
-      latitude,
-      longitude,
-      latitudeDelta: 0.01,
-      longitudeDelta: 0.01,
-    });
-  };
-
   return (
     // Main conatiner for background and such
     <View style={styles.container}>
@@ -81,7 +124,6 @@ export default function Screen1() {
           provider={PROVIDER_DEFAULT}
           style={styles.map}
           region={region}
-          onUserLocationChange={handleUserLocationChange}
           showsUserLocation={true}
           followsUserLocation={true}
         >
