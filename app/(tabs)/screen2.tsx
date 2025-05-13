@@ -19,7 +19,11 @@ export default function Screen2() {
   ];
 
   return (
+
+    // Main conatiner for background and such
     <View style={styles.container}>
+
+      // Top container for the title and fake data
       <View style={styles.topContainer}>
         <ThemedText style={styles.title}>Jogging History</ThemedText>
         {fakeData.map((entry, index) => (
@@ -28,6 +32,8 @@ export default function Screen2() {
           </ThemedText>
         ))}
       </View>
+
+      // Bottom container for the button
       <View style={styles.bottomContainer}>
         <Link href="/home" style={styles.button}>
           <ThemedText style={styles.buttonText}>Go Home</ThemedText>

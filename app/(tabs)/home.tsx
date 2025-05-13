@@ -14,6 +14,7 @@ export default function Screen1() {
     longitudeDelta: 0.01,
   });
 
+  // User location state
   const [userLocation, setUserLocation] = useState<Region | null>(null);
 
   // Timer logic
@@ -33,6 +34,7 @@ export default function Screen1() {
     };
   }, [isRunning]);
 
+  // Format time function
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
@@ -67,17 +69,21 @@ export default function Screen1() {
   };
 
   return (
+    // Main conatiner for background and such
     <View style={styles.container}>
+
+      // Timer display
       <ThemedText style={styles.timer}>{`Timer: ${formatTime(timer)}`}</ThemedText>
 
+      // Map display
       <View style={styles.mapWrapper}>
         <MapView
           provider={PROVIDER_DEFAULT}
           style={styles.map}
-          region={region} // Dynamically updated region
+          region={region}
           onUserLocationChange={handleUserLocationChange}
-          showsUserLocation={true} // Enable user location
-          followsUserLocation={true} // Automatically follow user location
+          showsUserLocation={true}
+          followsUserLocation={true}
         >
           {userLocation && (
             <Marker
@@ -92,12 +98,14 @@ export default function Screen1() {
         </MapView>
       </View>
 
+      // Start/Stop button
       <TouchableOpacity style={styles.button} onPress={toggleTimer}>
         <ThemedText style={styles.buttonText}>
           {isRunning ? 'STOP' : 'START'}
         </ThemedText>
       </TouchableOpacity>
 
+      // Link to saved jogs screen
       <Link href="/screen2" style={styles.button}>
         <ThemedText style={styles.buttonText}>Saved jogs</ThemedText>
       </Link>

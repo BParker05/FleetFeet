@@ -2,16 +2,18 @@ import { ThemedText } from '@/components/ThemedText';
 import { Link } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
-// Import the initialized Firebase app and auth
-
 export default function HomeScreen() {
-  // Use the already initialized auth
   return (
     <View style={styles.container}>
+      // Welcome
       <ThemedText style={styles.title}>Welcome To FleetFeet</ThemedText>
+
+      // Button to navigate to the home screen
+      // TO DO: Add firebase authentication
       <Link href="/home" style={styles.button}>
         <ThemedText style={styles.buttonText}>Log In</ThemedText>
       </Link>
+
     </View>
   );
 }
