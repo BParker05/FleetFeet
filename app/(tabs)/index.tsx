@@ -10,7 +10,7 @@ export default function HomeScreen() {
 
       // Button to navigate to the home screen
       // TO DO: Add firebase authentication
-      <Link href="/home" style={styles.button}>
+      <Link href="/login" style={styles.button}>
         <ThemedText style={styles.buttonText}>Log In</ThemedText>
       </Link>
 
