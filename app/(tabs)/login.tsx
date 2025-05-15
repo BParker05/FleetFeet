@@ -2,27 +2,42 @@ import { ThemedText } from '@/components/ThemedText';
 import { Link } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, View, TextInput, TouchableOpacity, Text } from 'react-native';
+import { auth } from '../../firebase'; 
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
-export default function login() {
+// Note: firebase auth is imported and initialized in the firebase.ts file
+
+export default function Login() {
+  // Variables
   const [pword, setPword] = useState('');
   const [email, setEmail] = useState('');
+  const [loginStatus, setLoginStatus] = useState(''); // Replace setloginout
 
+  // Debug function
   let n = 0;
-
-  async function debug(tag: String, str: String) {
-    console.log(tag + "No. " + n.toString(), str);
+  async function debug(tag: string, str: string) {
+    console.log(`${tag} No. ${n}`, str);
     n++;
   }
 
   function loginA() {
-    debug("loginA", "login: " + email + " password: " + pword + " success");
-    // Add Firebase authentication logic here
+    signInWithEmailAndPassword(auth, email, pword)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        debug('Login Success: ', user.email || 'No Email');
+        setLoginStatus(`Login: ${user.email}`);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        debug('Login Error: ', errorMessage);
+        setLoginStatus(`Login Error: ${errorMessage}`);
+      });
   }
 
   return (
     <View style={styles.container}>
-      {/* Welcome */}
-      <ThemedText style={styles.title}>Welcome To FleetFeet</ThemedText>
+      <Text style={styles.title}>Welcome To FleetFeet</Text>
 
       {/* Email Input */}
       <TextInput
@@ -49,6 +64,9 @@ export default function login() {
       <TouchableOpacity style={styles.button} onPress={loginA}>
         <Text style={styles.buttonText}>Log In</Text>
       </TouchableOpacity>
+
+      {/* Display Login Status */}
+      {loginStatus ? <Text style={styles.statusText}>{loginStatus}</Text> : null}
 
       {/* Link to Home */}
       <Link href="/home" style={styles.link}>
@@ -104,5 +122,10 @@ const styles = StyleSheet.create({
   linkText: {
     color: 'white',
     textDecorationLine: 'underline',
+  },
+  statusText: {
+    color: 'white',
+    marginTop: 10,
+    fontSize: 16,
   },
 });
