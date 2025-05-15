@@ -5,11 +5,11 @@ import { StyleSheet, View } from 'react-native';
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      // Welcome
+      {/* Welcome */}
       <ThemedText style={styles.title}>Welcome To FleetFeet</ThemedText>
 
-      // Button to navigate to the home screen
-      // TO DO: Add firebase authentication
+      {/* Button to navigate to the home screen */}
+      {/* TO DO: Add firebase authentication */}
       <Link href="/login" style={styles.button}>
         <ThemedText style={styles.buttonText}>Log In</ThemedText>
       </Link>

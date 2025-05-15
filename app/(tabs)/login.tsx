@@ -5,15 +5,15 @@ import { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { auth } from '../../firebase';
 
-// Note: firebase auth is imported and initialized in the firebase.ts file
+{/*Note: firebase auth is imported and initialized in the firebase.ts file*/}
 
 export default function Login() {
-  // Variables
+  {/*Variables*/}
   const [pword, setPword] = useState('');
   const [email, setEmail] = useState('');
   const [loginStatus, setLoginStatus] = useState(''); // Replace setloginout
 
-  // Debug function
+  {/*Debug function*/}
   let n = 0;
   async function debug(tag: string, str: string) {
     console.log(`${tag} No. ${n}`, str);
@@ -26,7 +26,7 @@ export default function Login() {
         const user = userCredential.user;
         debug('Login Success: ', user.email || 'No Email');
         setLoginStatus(`Login: ${user.email}`);
-        // Redirect to home page after successful login
+        {/*Redirect to home page after successful login*/}
         router.replace('/home');
       })
       .catch((error) => {

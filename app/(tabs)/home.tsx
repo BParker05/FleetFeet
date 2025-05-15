@@ -115,10 +115,10 @@ export default function Screen1() {
     // Main conatiner for background and such
     <View style={styles.container}>
 
-      // Timer display
+      {/* Timer display */}
       <ThemedText style={styles.timer}>{`Timer: ${formatTime(timer)}`}</ThemedText>
 
-      // Map display
+      {/* Map display */}
       <View style={styles.mapWrapper}>
         <MapView
           provider={PROVIDER_DEFAULT}
@@ -140,14 +140,14 @@ export default function Screen1() {
         </MapView>
       </View>
 
-      // Start/Stop button
+      {/* Start/Stop button */}
       <TouchableOpacity style={styles.button} onPress={toggleTimer}>
         <ThemedText style={styles.buttonText}>
           {isRunning ? 'STOP' : 'START'}
         </ThemedText>
       </TouchableOpacity>
 
-      // Link to saved jogs screen
+      {/* Link to saved jogs screen */}
       <Link href="/screen2" style={styles.button}>
         <ThemedText style={styles.buttonText}>Saved jogs</ThemedText>
       </Link>
