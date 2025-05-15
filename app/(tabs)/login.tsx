@@ -1,5 +1,5 @@
 import { ThemedText } from '@/components/ThemedText';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -26,6 +26,8 @@ export default function Login() {
         const user = userCredential.user;
         debug('Login Success: ', user.email || 'No Email');
         setLoginStatus(`Login: ${user.email}`);
+        // Redirect to home page after successful login
+        router.replace('/home');
       })
       .catch((error) => {
         const errorCode = error.code;
