@@ -1,9 +1,9 @@
 import { ThemedText } from '@/components/ThemedText';
 import { Link } from 'expo-router';
-import { useState } from 'react';
-import { StyleSheet, View, TextInput, TouchableOpacity, Text } from 'react-native';
-import { auth } from '../../firebase'; 
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useState } from 'react';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { auth } from '../../firebase';
 
 // Note: firebase auth is imported and initialized in the firebase.ts file
 
