@@ -1,32 +1,29 @@
-import { ThemedText } from '@/components/ThemedText';
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { auth } from '../../firebase';
 
-{/*Note: firebase auth is imported and initialized in the firebase.ts file*/}
-
 export default function Login() {
-  {/*Variables*/}
+  {/* Variables */}
   const [pword, setPword] = useState('');
   const [email, setEmail] = useState('');
   const [loginStatus, setLoginStatus] = useState(''); // Replace setloginout
 
-  {/*Debug function*/}
+  {/* Debug function */}
   let n = 0;
   async function debug(tag: string, str: string) {
     console.log(`${tag} No. ${n}`, str);
     n++;
   }
 
+  {/* Login handler */}
   function loginA() {
     signInWithEmailAndPassword(auth, email, pword)
       .then((userCredential) => {
         const user = userCredential.user;
         debug('Login Success: ', user.email || 'No Email');
         setLoginStatus(`Login: ${user.email}`);
-        {/*Redirect to home page after successful login*/}
         router.replace('/home');
       })
       .catch((error) => {
@@ -37,7 +34,7 @@ export default function Login() {
       });
   }
 
-  // Sign Up handler
+  {/* Sign Up handler */}
   function signUpA() {
     createUserWithEmailAndPassword(auth, email, pword)
       .then((userCredential) => {
@@ -51,7 +48,9 @@ export default function Login() {
   }
 
   return (
+    // Main container for background and such
     <View style={styles.container}>
+
       <Text style={styles.title}>Welcome To FleetFeet</Text>
 
       {/* Email Input */}
@@ -84,14 +83,6 @@ export default function Login() {
       <TouchableOpacity style={[styles.button, { marginTop: 10 }]} onPress={signUpA}>
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
-
-      {/* Display Login Status */}
-      {loginStatus ? <Text style={styles.statusText}>{loginStatus}</Text> : null}
-
-      {/* Link to Home */}
-      <Link href="/home" style={styles.link}>
-        <ThemedText style={styles.linkText}>Go to Map for demonstration</ThemedText>
-      </Link>
     </View>
   );
 }

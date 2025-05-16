@@ -41,10 +41,9 @@ export default function Screen2() {
 
   return (
 
-    // Main conatiner for background and such
+    // Main container for background and such
     <View style={styles.container}>
 
-      {/* Top container for the title and fake data */}
       <View style={styles.topContainer}>
         <ThemedText style={styles.title}>Jogging History</ThemedText>
         {jogs.length === 0 ? (

@@ -32,7 +32,6 @@ export default function Screen1() {
         return;
       }
 
-      // Get initial location
       const location = await Location.getCurrentPositionAsync({});
       const initialRegion = {
         latitude: location.coords.latitude,
@@ -90,7 +89,6 @@ export default function Screen1() {
         }
       };
     } else {
-      // Stop location tracking
       if (locationSubscription) {
         locationSubscription.remove();
         setLocationSubscription(null);
@@ -102,13 +100,13 @@ export default function Screen1() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (!user) {
-        router.replace('/login'); // Navigate to login screen
+        router.replace('/login');
       }
     });
     return unsubscribe;
   }, []);
 
-  // --- Save jog to Firestore under user UID ---
+  // Save jog to Firestore under user UID
   const saveJogToFirestore = async (timerValue: number) => {
     const user = auth.currentUser;
     if (!user) {
@@ -131,7 +129,6 @@ export default function Screen1() {
           createdAt: now.toISOString(),
         }
       );
-      // Optionally show a success message
     } catch (e) {
       Alert.alert('Error', 'Failed to save jog to Firestore.');
     }
@@ -148,7 +145,6 @@ export default function Screen1() {
   const toggleTimer = () => {
     setIsRunning((prev) => {
       if (prev) {
-        // Timer is running and will be stopped
         saveJogToFirestore(timer);
       } else {
         setTimer(0);
@@ -161,14 +157,13 @@ export default function Screen1() {
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      // onAuthStateChanged will handle navigation
     } catch (error) {
       Alert.alert('Error', 'Failed to log out.');
     }
   };
 
   return (
-    // Main conatiner for background and such
+    // Main container for background and such
     <View style={styles.container}>
 
       {/* Timer display */}
