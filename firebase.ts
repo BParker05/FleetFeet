@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { getAuth } from 'firebase/auth'; // Use getAuth for web/React Native
+import { getFirestore } from 'firebase/firestore';
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyA-6AgCe-fiH0zQ7jmtASpG9qODWAKNwpc",
   authDomain: "fleetfeet-c8d63.firebaseapp.com",
@@ -12,6 +12,9 @@ const firebaseConfig = {
   measurementId: "G-RRPH1M35GW",
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app); 
+const firebaseApp = initializeApp(firebaseConfig);
+
+export const auth = getAuth(firebaseApp); // Use getAuth for compatibility
+export const db = getFirestore(firebaseApp);
+
+export default firebaseApp;

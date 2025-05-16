@@ -1,22 +1,30 @@
 import { ThemedText } from '@/components/ThemedText';
 import { Link } from 'expo-router';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { auth, db } from '../../firebase';
 
 export default function Screen2() {
+  const [jogs, setJogs] = useState<{ date: string; time: string }[]>([]);
 
-  // Fake data for demonstration
-  const fakeData = [
-    { date: '03/05/25', time: '10:11' },
-    { date: '04/05/25', time: '21:33' },
-    { date: '05/05/25', time: '04:44' },
-    { date: '06/05/25', time: '12:20' },
-    { date: '07/05/25', time: '08:39' },
-    { date: '08/05/25', time: '17:06' },
-    { date: '09/05/25', time: '01:58' },
-    { date: '10/05/25', time: '23:15' },
-    { date: '11/05/25', time: '09:47' },
-    { date: '12/05/25', time: '14:32' },
-  ];
+  useEffect(() => {
+    const fetchJogs = async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const jogsRef = collection(db, 'users', user.uid, 'jogs');
+      const q = query(jogsRef, orderBy('createdAt', 'desc'));
+      const snapshot = await getDocs(q);
+      const jogsData = snapshot.docs.map(doc => ({
+        date: doc.data().date,
+        time: doc.data().time,
+      }));
+      setJogs(jogsData);
+    };
+
+    fetchJogs();
+  }, []);
 
   return (
 
@@ -26,11 +34,15 @@ export default function Screen2() {
       {/* Top container for the title and fake data */}
       <View style={styles.topContainer}>
         <ThemedText style={styles.title}>Jogging History</ThemedText>
-        {fakeData.map((entry, index) => (
-          <ThemedText key={index} style={styles.dataText}>
-            {entry.date} - {entry.time}
-          </ThemedText>
-        ))}
+        {jogs.length === 0 ? (
+          <ThemedText style={styles.dataText}>No jogs yet.</ThemedText>
+        ) : (
+          jogs.map((entry, index) => (
+            <ThemedText key={index} style={styles.dataText}>
+              {entry.date} - {entry.time}
+            </ThemedText>
+          ))
+        )}
       </View>
 
       {/* Bottom container for the button */}

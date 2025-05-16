@@ -5,6 +5,10 @@ import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker, PROVIDER_DEFAULT, Region } from 'react-native-maps';
 
+// ...existing imports...
+import { addDoc, collection } from 'firebase/firestore';
+import { auth, db } from '../../firebase';
+
 export default function Screen1() {
   const [timer, setTimer] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -94,6 +98,35 @@ export default function Screen1() {
     }
   }, [isRunning]);
 
+  // --- Save jog to Firestore under user UID ---
+  const saveJogToFirestore = async (timerValue: number) => {
+    const user = auth.currentUser;
+    if (!user) {
+      Alert.alert('Not logged in', 'Please log in to save your jog.');
+      return;
+    }
+
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-AU');
+    const minutes = Math.floor(timerValue / 60);
+    const seconds = timerValue % 60;
+    const timeStr = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+    try {
+      await addDoc(
+        collection(db, 'users', user.uid, 'jogs'),
+        {
+          date: dateStr,
+          time: timeStr,
+          createdAt: now.toISOString(),
+        }
+      );
+      // Optionally show a success message
+    } catch (e) {
+      Alert.alert('Error', 'Failed to save jog to Firestore.');
+    }
+  };
+
   // Format time function
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
@@ -101,10 +134,13 @@ export default function Screen1() {
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   };
 
-  // Toggle timer function
+  // --- Toggle timer function ---
   const toggleTimer = () => {
     setIsRunning((prev) => {
-      if (!prev) {
+      if (prev) {
+        // Timer is running and will be stopped
+        saveJogToFirestore(timer);
+      } else {
         setTimer(0);
       }
       return !prev;
