@@ -1,6 +1,6 @@
 import { ThemedText } from '@/components/ThemedText';
 import { Link, router } from 'expo-router';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { auth } from '../../firebase';
@@ -37,6 +37,19 @@ export default function Login() {
       });
   }
 
+  // Sign Up handler
+  function signUpA() {
+    createUserWithEmailAndPassword(auth, email, pword)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        setLoginStatus(`Sign Up Success: ${user.email}`);
+        router.replace('/home');
+      })
+      .catch((error) => {
+        setLoginStatus(`Sign Up Error: ${error.message}`);
+      });
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome To FleetFeet</Text>
@@ -65,6 +78,11 @@ export default function Login() {
       {/* Login Button */}
       <TouchableOpacity style={styles.button} onPress={loginA}>
         <Text style={styles.buttonText}>Log In</Text>
+      </TouchableOpacity>
+
+      {/* Sign Up Button */}
+      <TouchableOpacity style={[styles.button, { marginTop: 10 }]} onPress={signUpA}>
+        <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
 
       {/* Display Login Status */}
