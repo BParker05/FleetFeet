@@ -1,12 +1,11 @@
 import { ThemedText } from '@/components/ThemedText';
 import * as Location from 'expo-location';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { addDoc, collection } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker, PROVIDER_DEFAULT, Region } from 'react-native-maps';
-
-// ...existing imports...
-import { addDoc, collection } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
 
 export default function Screen1() {
@@ -22,6 +21,7 @@ export default function Screen1() {
   // User location state
   const [userLocation, setUserLocation] = useState<Region | null>(null);
   const [locationSubscription, setLocationSubscription] = useState<Location.LocationSubscription | null>(null);
+  const router = useRouter();
 
   // Request location permissions and start tracking
   useEffect(() => {
@@ -98,6 +98,16 @@ export default function Screen1() {
     }
   }, [isRunning]);
 
+  // Listen for auth state changes
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        router.replace('/login'); // Navigate to login screen
+      }
+    });
+    return unsubscribe;
+  }, []);
+
   // --- Save jog to Firestore under user UID ---
   const saveJogToFirestore = async (timerValue: number) => {
     const user = auth.currentUser;
@@ -147,6 +157,16 @@ export default function Screen1() {
     });
   };
 
+  // Log out handler
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      // onAuthStateChanged will handle navigation
+    } catch (error) {
+      Alert.alert('Error', 'Failed to log out.');
+    }
+  };
+
   return (
     // Main conatiner for background and such
     <View style={styles.container}>
@@ -187,6 +207,11 @@ export default function Screen1() {
       <Link href="/screen2" style={styles.button}>
         <ThemedText style={styles.buttonText}>Saved jogs</ThemedText>
       </Link>
+
+      {/* Log Out Button */}
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <ThemedText style={styles.logoutButtonText}>Log Out</ThemedText>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -234,5 +259,20 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 20,
     marginTop: 50,
+  },
+  logoutButton: {
+    position: 'absolute',
+    left: 20,
+    bottom: 20,
+    backgroundColor: '#242424',
+    borderWidth: 2,
+    borderColor: 'white',
+    borderRadius: 5,
+    padding: 10,
+    zIndex: 10,
+  },
+  logoutButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });

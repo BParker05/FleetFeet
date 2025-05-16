@@ -1,6 +1,6 @@
 import { ThemedText } from '@/components/ThemedText';
 import { Link } from 'expo-router';
-import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { auth, db } from '../../firebase';
@@ -9,21 +9,22 @@ export default function Screen2() {
   const [jogs, setJogs] = useState<{ date: string; time: string }[]>([]);
 
   useEffect(() => {
-    const fetchJogs = async () => {
-      const user = auth.currentUser;
-      if (!user) return;
+    const user = auth.currentUser;
+    if (!user) return;
 
-      const jogsRef = collection(db, 'users', user.uid, 'jogs');
-      const q = query(jogsRef, orderBy('createdAt', 'desc'));
-      const snapshot = await getDocs(q);
+    const jogsRef = collection(db, 'users', user.uid, 'jogs');
+    const q = query(jogsRef, orderBy('createdAt', 'desc'));
+
+    // Listen for real-time updates
+    const unsubscribe = onSnapshot(q, (snapshot) => {
       const jogsData = snapshot.docs.map(doc => ({
         date: doc.data().date,
         time: doc.data().time,
       }));
       setJogs(jogsData);
-    };
+    });
 
-    fetchJogs();
+    return unsubscribe; // Clean up listener on unmount
   }, []);
 
   return (
