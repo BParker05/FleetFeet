@@ -19,6 +19,7 @@ export default function Screen1() {
   });
 
   // User location state
+  // random comment
   const [userLocation, setUserLocation] = useState<Region | null>(null);
   const [locationSubscription, setLocationSubscription] = useState<Location.LocationSubscription | null>(null);
   const router = useRouter();
@@ -269,5 +270,13 @@ const styles = StyleSheet.create({
   logoutButtonText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  timerContainer: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    right: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
