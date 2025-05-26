@@ -271,12 +271,4 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
-  timerContainer: {
-    position: 'absolute',
-    top: 20,
-    left: 20,
-    right: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
 });
