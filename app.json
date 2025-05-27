@@ -14,7 +14,10 @@
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "This app needs access to location to track your jogging routes.",
         "NSLocationAlwaysUsageDescription": "This app needs access to location to track your jogging routes.",
-        "UIBackgroundModes": ["location", "fetch"]
+        "UIBackgroundModes": [
+          "location",
+          "fetch"
+        ]
       }
     },
     "android": {
@@ -23,7 +26,11 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.fleetfeet.app"
+      "package": "com.fleetfeet.app",
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -50,6 +57,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "8a280b75-0748-4d3d-9399-0b0d925b2d3b"
+      }
     }
   }
 }
